@@ -27,12 +27,6 @@ class SafeNormalizeObservation(NormalizeObservation):
         """Steps through the environment and normalizes the observation."""
         obs, rews, costs, terminateds, truncateds, infos = self.env.step(action)
         obs = self.normalize(obs) if self.is_vector_env else self.normalize(np.array([obs]))[0]
-        if 'final_observation' in infos:
-            final_obs_slice = infos['_final_observation'] if self.is_vector_env else slice(None)
-            infos['original_final_observation'] = infos['final_observation']
-            infos['final_observation'][final_obs_slice] = self.normalize(
-                infos['final_observation'][final_obs_slice],
-            )
         return obs, rews, costs, terminateds, truncateds, infos
 
 
